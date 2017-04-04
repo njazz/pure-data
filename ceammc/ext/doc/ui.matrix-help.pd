@@ -1,0 +1,148 @@
+#N canvas 0 0 715 555 12;
+#X obj 474 50 cnv 1 221 21 empty empty empty 17 7 0 10 -245760 -1 0;
+#X text 474 50 The matrix of toggles has you.;
+#X obj 1 1 cnv 5 712 40 empty empty ui.matrix 20 20 0 20 -104026 -4096
+0;
+#X obj 235 80 cnv 1 460 47 empty empty empty 17 7 0 10 -257983 -1 0;
+#X text 240 80 Rectangle matrix of toggles.  Note: all matrix
+operations have following cell address format - ROW COL.;
+#X floatatom 146 155 5 0 0 0 - - -;
+#X floatatom 261 155 5 0 0 0 - - -;
+#X msg 50 170 dump;
+#X msg 146 184 getrow \$1;
+#X msg 261 184 getcolumn \$1;
+#X msg 69 199 clear;
+#X msg 165 213 bang;
+#X obj 50 256 ui.matrix @rows 4 @cols 8 @size 105 53;
+#X obj 50 328 route cell row col;
+#X obj 155 357 ui.display @size=60x18;
+#X obj 107 386 ui.display @size=60x18;
+#X obj 50 415 ui.display @size=60x18;
+#X obj 20 454 cnv 1 685 1 empty empty empty 17 7 0 10 -203890 -1 0;
+#X obj 20 459 cnv 5 88 16 empty empty properties: 0 14 0 14 -262144
+-49933 0;
+#X msg 120 464 @rows;
+#X text 240 464 Get/Set number of matrix rows. Type: int. Min value:
+1;
+#X msg 120 491 @cols;
+#X text 240 491 Get/Set number of matrix columns. Type: int. Min
+value: 1;
+#X msg 120 518 @send;
+#X text 240 518 Get/Set send destination. Type: symbol;
+#X msg 120 545 @receive;
+#X text 240 545 Get/Set receive source. Type: symbol;
+#X obj 20 582 cnv 1 685 1 empty empty empty 17 7 0 10 -203890 -1 0;
+#X obj 20 587 cnv 5 63 16 empty empty methods: 0 14 0 14 -262144
+-49933 0;
+#X msg 120 592 getcell;
+#X text 240 592 outputs cell value as [cell( message. Arguments are: ;
+#X obj 250 620 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 620 ROW: cell row. Type: int. Min value: 0;
+#X obj 250 648 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 648 COL: cell column. Type: int. Min value: 0;
+#X msg 120 676 setcell;
+#X text 240 676 sets cell value without outputting it. Arguments are:
+;
+#X obj 250 704 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 704 ROW: cell row. Type: int. Min value: 0;
+#X obj 250 732 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 732 COL: cell column. Type: int. Min value: 0;
+#X obj 250 760 cnv 1 43 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 760 VALUE: value. Type: int. Allowed values: 0 \, 1\.;
+#X msg 120 788 clear;
+#X text 240 788 clears all matrix cells and outputs cells that were
+changed.;
+#X msg 120 830 dump;
+#X text 240 830 dumps all object info to Pd console window.;
+#X msg 120 862 getcolumn;
+#X text 240 862 outputs list of column values as [col( message.
+Arguments are: ;
+#X obj 250 904 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 904 NUM: Column index. Type: int. Min value: 0;
+#X msg 120 932 setcolumn;
+#X text 240 932 sets column values without outputting them. Arguments
+are: ;
+#X obj 250 960 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 960 COL: Columns index. Type: int. Min value: 0;
+#X obj 250 988 cnv 1 50 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 988 VALUES: cells values \, for ex.: 1 0 1 1\. Type: list.
+;
+#X msg 120 1016 getrow;
+#X text 240 1016 outputs list of row values as [row( message.
+Arguments are: ;
+#X obj 250 1044 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 1044 NUM: row index. Type: int. Min value: 0;
+#X msg 120 1072 setrow;
+#X text 240 1072 sets row values without outputting them. Arguments
+are: ;
+#X obj 250 1100 cnv 1 28 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 1100 ROW: row index. Type: int. Min value: 0;
+#X obj 250 1128 cnv 1 50 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 1128 VALUES: cells values \, for ex.: 1 0 1 1\. Type:
+list. ;
+#X msg 120 1156 set;
+#X text 240 1156 silently sets matrix state. Arguments are: ;
+#X obj 250 1184 cnv 1 50 21 empty empty empty 17 7 0 10 -245695 -1 0;
+#X text 250 1184 VALUES: list values in format: ROW COL VALUE [ \, ROW
+COL VALUE].  VALUE should be 1 or 0\. Type: list. ;
+#X obj 20 1236 cnv 1 685 1 empty empty empty 17 7 0 10 -203890 -1 0;
+#X obj 20 1241 cnv 5 54 16 empty empty inlets: 0 14 0 14 -262144
+-49933 0;
+#X text 120 1246 1\.;
+#X text 150 1246 *bang*;
+#X text 240 1246 outputs matrix state as separate messages in format:
+[cell ROW COL VALUE(. ;
+#X text 150 1278 *list*;
+#X text 240 1278 sets matrix state and outputs values.  List values
+format: ROW COL VALUE [ \, ROW COL VALUE].  VALUE should be 1 or 0\..
+;
+#X obj 20 1320 cnv 1 685 1 empty empty empty 17 7 0 10 -203890 -1 0;
+#X obj 20 1325 cnv 5 63 16 empty empty outlets: 0 14 0 14 -262144
+-49933 0;
+#X text 120 1330 1\.;
+#X text 240 1330 output;
+#X obj 10 48 ui.link @title index @url ../index-help.pd;
+#X text 51 45 ::;
+#X obj 67 48 ui.link @title ceammc @url ceammc-help.pd;
+#X text 115 45 ::;
+#X obj 131 48 ui.link @title ui @url ceammc.ui-help.pd;
+#X obj 1 1378 cnv 5 712 48 empty empty empty 17 7 0 10 -203890 -1 0;
+#X text 10 1381 library: ceammc v0.1;
+#X text 560 1393 see also:;
+#X obj 630 1396 ui.link @title [ui.radio] @bgcolor 0.78431 0.78431
+0.78431 @url ui.radio-help.pd;
+#N canvas 10 1400 400 250 info 0;
+#X obj 1 1 cnv 1 107 247 empty empty empty 17 7 0 10 -183085 -1 0;
+#X text 10 10 library:;
+#X text 120 10 ceammc;
+#X text 10 32 version:;
+#X text 120 32 0.1;
+#X text 10 54 object:;
+#X text 120 54 ui.matrix;
+#X text 10 76 category:;
+#X text 120 76 ui;
+#X text 10 98 since:;
+#X text 120 98 0.1;
+#X text 10 120 authors:;
+#X text 120 120 Pierre Guillot;
+#X text 10 142 license:;
+#X text 120 142 GPL3;
+#X text 10 164 keywords:;
+#X text 120 164 ui \, matrix;
+#X text 10 186 website:;
+#X obj 120 189 ui.link @title https://github.com/uliss/pure-data @url
+https://github.com/uliss/pure-data;
+#X obj 120 228 cnv 1 270 1 empty empty empty 17 7 0 10 -203890 -1 0;
+#X text 120 228 generated by pddoc;
+#X restore 10 1400 pd info;
+#X connect 12 0 13 0;
+#X connect 9 0 12 0;
+#X connect 13 0 16 0;
+#X connect 13 1 15 0;
+#X connect 5 0 8 0;
+#X connect 11 0 12 0;
+#X connect 8 0 12 0;
+#X connect 7 0 12 0;
+#X connect 6 0 9 0;
+#X connect 13 2 14 0;
+#X connect 10 0 12 0;
