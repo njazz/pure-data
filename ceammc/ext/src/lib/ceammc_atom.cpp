@@ -74,6 +74,21 @@ bool Atom::isNatural() const
     return isInteger() && a_w.w_float >= 0.f;
 }
 
+bool Atom::isDollar() const
+{
+    return a_type == A_DOLLAR;
+}
+
+bool Atom::isSemicolon() const
+{
+    return a_type == A_SEMI;
+}
+
+bool Atom::isComma() const
+{
+    return a_type == A_COMMA;
+}
+
 Atom::Type Atom::type() const
 {
     switch (a_type) {

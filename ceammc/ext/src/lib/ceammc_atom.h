@@ -70,6 +70,12 @@ public:
      */
     bool isNatural() const;
 
+    bool isDollar() const;
+
+    bool isSemicolon() const;
+
+    bool isComma() const;
+
     /**
      * @returns atom logical type
      */
