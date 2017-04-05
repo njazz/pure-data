@@ -149,20 +149,12 @@ QECpEsGDCg9Yrkw5syWDXgwONKDQwMDOVgYHXj7QydNn0Z8Hbt7JKTQoTKdDm0p9qtQR06dTo2Ld
 OrRqqataw0Id29QrBbBkK0BIK9Ys2qxsx3q98JZr3LJ2hEiAwrev37+AJTgZTLiw4cOIlQQBADs=}
 image create photo buttonimagekeyboard -data $keyboarddata
 
-set knobdata {R0lGODdhIAAgAMYBAAAAAP///wDC+oLk/5bo/5Tm/Jfp/67t/7Ht/gDI9wrO/A3J+A/L+RDK+B3N
-/CLT/inN9i/R+FPY91rd/1jY+Vvf/1ze/2Lb+Grj/27i/3Dj/3Hi/3Pj/4Lm/5bp/5Xj9qfu/6/p
-97fw/8Lz/wDK+Fzf/XHn/5Xk9qLn9q7t+63r+NH3/8/y+dj0+un7/7Pt+Ln0/9P4/9T4/+T198Hh
-5ID4/5L7/1P//37//47//6H//8n///b39////v/+9P/47t7d3P/48/n39/7+/v39/fz8/Pv7+/r6
-+vn5+fj4+Pf39/b29vX19fT09PPz8/Ly8vHx8fDw8O/v7+7u7u3t7ezs7Ovr6+rq6unp6ejo6Ofn
-5+bm5uXl5eTk5OPj4+Li4uHh4eDg4N/f393d3dzc3NHR0XBwcP//////////////////////////
-/////////////////////////////////////////////////////////////////////////ywA
-AAAAIAAgAAAH/oABgoOEhYaHiImKi2aNjo+QkZKEZouWg5WYhUpcXFVGh1FbXlGFmYKnAU9iVZZP
-YFeUsoJLYkmbTLlEhV+tqLNOYqCCTFtZVE9PU1lcUIReVr+aSbaDWFxUR4RGUVleSINfTgGplVul
-gsyKU2DgAU1f5LJZg1ZcllJd9fKaU7RduyxheSLoVrkAQwRxGXcpSZeE0iIS8XUpAJUlmjIG8PGj
-oqAmTTSSq1FhAgUJGAh4WOnhAAIXh5YwEWnGhokMGzRwGMBzgAELAmgIMSST5g5FEVIEAXKLUBOG
-/FDlQLSiAYoeAXiMmTlICteo5HAcktHgg1MyIQMc4QIRrJkbZzMKxWBwwhCTMRit+AtQxK2OC4Rg
-JAiBiFqVKhCluA3wYIQgECRUKEJSxteReAc7KAggYsELS0rCzNRCZXGAEg4gsKioBEyXWKYDFGjh
-US0WiAdrJ8qt+xDv3qYoSRpO3BHw48gNBQIAOw==}
+set knobdata {R0lGODdhIAAgAOMQAEdHRyGy9X2pu6Kioi7B/rW1tWXP+8PDw4/V9dDQ0K7a7tzc3Mjm8ubm5u3t
+7f7+/iwAAAAAIAAgAAAE3fDJSau9OOvNOx5AOIxkaZ6DNTRs675wm1YrvBxFWRxLPFM1V26wSyRw
+owLsNwk2FiOeY0q9jXoyVQs6WFC/1WuWJluBz47GaAxk5bzoM1Sp1kIP8fihWyfv4Xlgd31tBQWB
+cYaETWp4iGd7ixIrAwlxCAh6lFqVaAgEmWiRTJONZwoEBnmjWoZgDAQEDXmKpA8rf1QNsQx5g7Y1
+A44OBgQKgX+St25dDp/HvkQswGWfoXFcbIwsCwIBqsh801otCgizgUvkMew+6+3w42Tx9MAhACj5
+KB78/f7/ACMAADs=}
 image create photo buttonimageknob -data $knobdata
 
 set menuarraydata {R0lGODlhIAAgAPIEAAAAAAEBAQoKCuDg4P///wAAAAAAAAAAACH5BAAAAAAALAAAAAAgACAAAAOG
