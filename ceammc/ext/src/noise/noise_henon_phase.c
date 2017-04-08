@@ -238,8 +238,6 @@ void setup_noise0x2ehenon_phase()
         (t_typ_method)(henonphase_free),
         sizeof(henonphase), 0, A_GIMME, 0);
 
-    //eclass_addmethod(lorenz_class, (method)baker_bang, "bang", A_GIMME, 0);
-
     eclass_addmethod(henonphase_class, (method)henonphase_bang, "bang", A_GIMME, 0);
     eclass_addmethod(henonphase_class, (method)henonphase_set, "set", A_GIMME, 0);
     eclass_addmethod(henonphase_class, (method)henonphase_reset, "reset", A_GIMME, 0);
@@ -249,8 +247,6 @@ void setup_noise0x2ehenon_phase()
     eclass_addmethod(henonphase_class, (method)henonphase_ny, "y", A_FLOAT, 0);
     eclass_addmethod(henonphase_class, (method)henonphase_dt, "dt", A_FLOAT, 0);
     eclass_addmethod(henonphase_class, (method)henonphase_om, "om", A_FLOAT, 0);
-    
-    post("noise.henon_phase: part of A-Chaos library, (C) 2004 André Sier");
 }
 
 

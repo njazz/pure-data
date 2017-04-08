@@ -239,8 +239,6 @@ void setup_noise0x2eikeda()
         (t_typ_method)(ikeda_free),
         sizeof(ikeda), 0, A_GIMME, 0);
 
-    //eclass_addmethod(lorenz_class, (method)baker_bang, "bang", A_GIMME, 0);
-
     eclass_addmethod(ikeda_class, (method)ikeda_bang, "bang", A_GIMME, 0);
     eclass_addmethod(ikeda_class, (method)ikeda_set, "set", A_GIMME, 0);
     eclass_addmethod(ikeda_class, (method)ikeda_reset, "reset", A_GIMME, 0);
@@ -252,8 +250,6 @@ void setup_noise0x2eikeda()
     eclass_addmethod(ikeda_class, (method)ikeda_k, "c", A_DEFFLOAT, 0);
     eclass_addmethod(ikeda_class, (method)ikeda_p, "p", A_DEFFLOAT, 0);
     eclass_addmethod(ikeda_class, (method)ikeda_om, "om", A_DEFFLOAT, 0);
-    
-    post("noise.ikeda: part of A-Chaos library, (C) 2004 André Sier");
 }
 
 
