@@ -18,14 +18,31 @@ set(DOC_FILES
     env.ar~
     env.adsr~
     env.follow~
+    flt.bpf12~
+    flt.bpf24~
+    flt.c_bpf~
+    flt.c_highshelf~
+    flt.c_hpf~
+    flt.c_lowshelf~
+    flt.c_lpf~
+    flt.c_notch~
+    flt.c_peak~
     flt.dcblock~
     flt.dcblock2~
+    flt.biquad~
     flt.highshelf~
+    flt.hpf12~
+    flt.hpf24~
     flt.lowshelf~
+    flt.lpf12~
+    flt.lpf24~
+    flt.notch~
+    flt.resonbp~
     flt.eq_peak~
     fx.freqshift~
     fx.pitchshift~
     fx.freeverb~
+    fx.freeverb2~
     global.float
     global.int
     global.list
@@ -93,11 +110,15 @@ set(DOC_FILES
     math.log10
     math.log2
     math.nan
+    math.neg
     math.pi
+    math.reciprocal
     math.round
+    math.sign
     math.sin
     math.sinh
     math.sqrt
+    math.squared
     math.tan
     math.tanh
     math.trunc
@@ -112,20 +133,27 @@ set(DOC_FILES
     osc.tri~
     pass.changed
     pass.if
+    pass.this
     prop.get
     prop.set
+    random.int
+    reject.if
+    reject.this
     replace
     snd.file
     symbol.length
+    system.hostname
     system.memsize
     system.memused
     system.screen_size
     ui.bang
     ui.bpfunc
     ui.display
+    ui.keyboard
     ui.knob
     ui.matrix
     ui.scope~
+    ui.slider2d
     ui.spectroscope~
     ui.toggle
     vector.distance
