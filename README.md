@@ -77,6 +77,7 @@ this work is based on / includes:
    - Cream library (https://github.com/CICM/CreamLibrary)
    - hcs library (https://puredata.info/downloads/hcs)
    - comport object
+   - A-Chaos library - https://github.com/s373/ofxAChaosLib
    - FAUSTDSP (http://faust.grame.fr)
    - pddoc (https://github.com/uliss/pddoc)
 
