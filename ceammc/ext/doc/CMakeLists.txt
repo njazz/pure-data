@@ -134,6 +134,7 @@ set(DOC_FILES
     pass.changed
     pass.if
     pass.this
+    path.basename
     prop.get
     prop.set
     random.int
@@ -142,6 +143,7 @@ set(DOC_FILES
     replace
     snd.file
     symbol.length
+    system.getenv
     system.hostname
     system.memsize
     system.memused
@@ -154,6 +156,7 @@ set(DOC_FILES
     ui.matrix
     ui.scope~
     ui.slider2d
+    ui.sliders
     ui.spectroscope~
     ui.toggle
     vector.distance

@@ -126,6 +126,7 @@ osc.tri~		~		~
 pass.changed		.		.
 pass.if		..		..
 pass.this		.		.
+path.basename		.		.
 prop->,prop->		.		?
 prop.get,prop->		.		?
 prop.set,prop<-		?		.
@@ -136,6 +137,7 @@ reject.this		.		.
 replace		...		.
 snd.file		.		.
 symbol.length		.		.
+system.getenv		.		.
 system.hostname		.		.
 system.memsize		.		.
 system.memused		.		..
@@ -148,6 +150,7 @@ ui.knob		.		.
 ui.matrix		.		.
 ui.scope~		.		-
 ui.slider2d		.		.
+ui.sliders		.		.
 ui.spectroscope~		~		-
 ui.toggle		.		.
 vector.distance		..		.

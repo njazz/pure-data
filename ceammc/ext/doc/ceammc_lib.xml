@@ -394,6 +394,11 @@
       <xi:include href="pass.this.pddoc" parse="xml"/>
     </entry>
   </category>
+  <category name="path">
+    <entry descr="outputs filename portion of pathname" name="path.basename" ref_view="object">
+      <xi:include href="path.basename.pddoc" parse="xml"/>
+    </entry>
+  </category>
   <category name="predicates">
     <entry descr="checks if input data has *any* type" name="is_any" ref_view="object">
       <xi:include href="is_any.pddoc" parse="xml"/>
@@ -452,6 +457,9 @@
     </entry>
   </category>
   <category name="system">
+    <entry descr="Get system environment variables" name="system.getenv" ref_view="object">
+      <xi:include href="system.getenv.pddoc" parse="xml"/>
+    </entry>
     <entry descr="outputs system hostname" name="system.hostname" ref_view="object">
       <xi:include href="system.hostname.pddoc" parse="xml"/>
     </entry>
@@ -489,6 +497,9 @@
     </entry>
     <entry descr="2D slider widget" name="ui.slider2d" ref_view="link">
       <xi:include href="ui.slider2d.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="Multiple slider widget" name="ui.sliders" ref_view="link">
+      <xi:include href="ui.sliders.pddoc" parse="xml"/>
     </entry>
     <entry descr="Spectroscope GUI object" name="ui.spectroscope~" ref_view="link">
       <xi:include href="ui.spectroscope~.pddoc" parse="xml"/>
