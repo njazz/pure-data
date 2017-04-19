@@ -1,6 +1,7 @@
 include_directories(Catch/single_include)
 include_directories(../lib)
 include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${CMAKE_BINARY_DIR}) # for config.h
 include(tests.cmake)
 add_definitions("-DTEST_DATA_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\"")
 #remove_definitions(-DPD_INTERNAL)
@@ -23,11 +24,14 @@ ceammc_add_test("ceammc::list" test_fn_list)
 ceammc_add_test("ceammc::vector" test_fn_vector)
 ceammc_add_test("ceammc::faust" test_faust)
 ceammc_add_test("ceammc::timeline" test_timeline)
+ceammc_add_test("ceammc::platform" test_platform)
+ceammc_add_test("ceammc::convert" test_convert)
 
 ceammc_add_extension_test("list_walk" "../list/list_walk.cpp")
 ceammc_add_extension_test("list_walk2" "../list/list_walk.cpp")
 ceammc_add_extension_test("snd_file" "../base/snd_file.cpp")
 ceammc_add_extension_test("ext_replace" "../base/replace.cpp")
+ceammc_add_extension_test("ext_expand_env" "../base/expand_env.cpp")
 ceammc_add_extension_test("ext_msg" "../base/msg.cpp")
 ceammc_add_extension_test("ext_list_each" "../list/list_each.cpp")
 

@@ -1,3 +1,5 @@
+conv.sec2str,sec->str		.		.
+conv.str2sec,str->sec		.		.
 data.fifo		.		.
 data.list		..		.
 dyn.comp2~		~~		~~.
@@ -10,6 +12,7 @@ dyn.softclip~		~		~
 env.adsr~		~		~.
 env.ar~		~		~.
 env.follow~		~		~.
+expand_env		.		.
 flt.biquad~		~~~~~~		~
 flt.bpf12~		~		~.
 flt.bpf24~		~		~.
@@ -31,10 +34,13 @@ flt.lpf12~		~		~.
 flt.lpf24~		~		~.
 flt.notch~		~		~.
 flt.resonbp~		~		~.
+fx.distortion~		~		~.
+fx.flanger~		~		~.
 fx.freeverb2~		~~		~~.
 fx.freeverb~		~		~.
 fx.freqshift~		~~		~~.
 fx.pitchshift~		~~		~.
+fx.zita_rev1~		~~		~~.
 global.float		.		.
 global.int		.		.
 global.list		.		.

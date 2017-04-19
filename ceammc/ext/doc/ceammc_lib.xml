@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <library xmlns:xi="http://www.w3.org/2001/XInclude" name="ceammc" version="1.0">
+  <category name="conv">
+    <entry descr="converts float time in seconds to formated symbol" name="conv.sec2str" ref_view="object">
+      <xi:include href="conv.sec2str.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="converts formatted time to float value in seconds" name="conv.str2sec" ref_view="object">
+      <xi:include href="conv.str2sec.pddoc" parse="xml"/>
+    </entry>
+  </category>
   <category name="data">
     <entry descr="First-In-First-Out (FIFO) queue data container" name="data.fifo" ref_view="object">
       <xi:include href="data.fifo.pddoc" parse="xml"/>
@@ -43,6 +51,9 @@
     </entry>
   </category>
   <category name="flow">
+    <entry descr="Substitute enviroment variables in data stream" name="expand_env" ref_view="object">
+      <xi:include href="expand_env.pddoc" parse="xml"/>
+    </entry>
     <entry descr="Replace atoms in data stream" name="replace" ref_view="object">
       <xi:include href="replace.pddoc" parse="xml"/>
     </entry>
@@ -113,6 +124,12 @@
     </entry>
   </category>
   <category name="fx">
+    <entry descr="cubic nonlinearity distortion" name="fx.distortion~" ref_view="object">
+      <xi:include href="fx.distortion~.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="mono flanging effect" name="fx.flanger~" ref_view="object">
+      <xi:include href="fx.flanger~.pddoc" parse="xml"/>
+    </entry>
     <entry descr="freeverb2 - stereo version of freeverb" name="fx.freeverb2~" ref_view="object">
       <xi:include href="fx.freeverb2~.pddoc" parse="xml"/>
     </entry>
@@ -124,6 +141,9 @@
     </entry>
     <entry descr="simple pitch shifter based on 2 delay lines" name="fx.pitchshift~" ref_view="object">
       <xi:include href="fx.pitchshift~.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="Zita stereo reverb" name="fx.zita_rev1~" ref_view="object">
+      <xi:include href="fx.zita_rev1~.pddoc" parse="xml"/>
     </entry>
   </category>
   <category name="global">

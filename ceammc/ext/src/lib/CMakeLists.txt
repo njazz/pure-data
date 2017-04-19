@@ -1,3 +1,4 @@
+include_directories(${CMAKE_BINARY_DIR}) # for config.h
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/ceammc/extra/CicmWrapper/Sources)
 
@@ -14,15 +15,14 @@ if(${WITH_COVERAGE})
     endif()
 endif()
 
-# main static library
-add_library(ceammc_core SHARED
-    ceammc.h
+set(CEAMMC_LIB_SOURCES ceammc.h
     ceammc.hpp
     ceammc.c
     ceammc.cpp
     ceammc_gui.h
     ceammc_atom.cpp
     ceammc_atomlist.cpp
+    ceammc_convert.cpp
     ceammc_factory.h
     ceammc_faust.cpp
     ceammc_fn_list.cpp
@@ -32,15 +32,31 @@ add_library(ceammc_core SHARED
     ceammc_format.cpp
     ceammc_object.cpp
     ceammc_impl.cpp
+    ceammc_platform.cpp
     ceammc_property.cpp
     ceammc_timeline.cpp)
+
+if(UNIX)
+    list(APPEND CEAMMC_LIB_SOURCES ceammc_platform_unix.cpp)
+elseif(WIN32)
+    list(APPEND CEAMMC_LIB_SOURCES ceammc_platform_win.cpp)
+endif()
+
+# main shared library
+add_library(ceammc_core SHARED ${CEAMMC_LIB_SOURCES})
 
 set_target_properties(ceammc_core PROPERTIES
     COMPILE_FLAGS "${LIBCEAMMC_COMPILE_FLAGS}"
     LINK_FLAGS    "${LIBCEAMMC_LINK_FLAGS}")
 
 if(WIN32)
-    target_link_libraries(ceammc_core psapi puredata-core)
+    target_link_libraries(ceammc_core psapi shlwapi puredata-core)
+
+    # copy library to tests folder
+    add_custom_command(TARGET ceammc_core POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_FILE:ceammc_core>"
+            "${CMAKE_CURRENT_BINARY_DIR}/../tests")
 endif()
 
 #
