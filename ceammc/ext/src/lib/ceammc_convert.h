@@ -14,17 +14,31 @@
 #ifndef CEAMMC_CONVERT_H
 #define CEAMMC_CONVERT_H
 
+#include <cmath>
 #include <string>
 
 namespace ceammc {
+
+template <class T>
+T clip(T v, T min, T max)
+{
+    return std::min(max, std::max(v, min));
+}
+
 namespace convert {
     namespace time {
         /**
          * @brief converts time in seconds to formatted time string: "00:00:00"
          */
-        std::string sec2str(int sec);
+        std::string sec2str(float sec, bool ms = false);
 
         float str2sec(const std::string& str, float def = 0.f);
+    }
+
+    template <class T>
+    T lin2lin(T v, T x0, T x1, T y0, T y1)
+    {
+        return std::abs(v - x0) / std::abs(x0 - x1) * (y1 - y0) + y0;
     }
 }
 }
