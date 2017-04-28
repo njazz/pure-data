@@ -6,6 +6,8 @@ include(tests.cmake)
 add_definitions("-DTEST_DATA_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\"")
 #remove_definitions(-DPD_INTERNAL)
 
+find_package(Iconv)
+
 add_library(tests_main_lib STATIC tests_main.cpp)
 
 if(APPLE)
@@ -26,6 +28,10 @@ ceammc_add_test("ceammc::faust" test_faust)
 ceammc_add_test("ceammc::timeline" test_timeline)
 ceammc_add_test("ceammc::platform" test_platform)
 ceammc_add_test("ceammc::convert" test_convert)
+ceammc_add_test("ceammc::string" test_string)
+if(ICONV_FOUND)
+    target_link_libraries(test_string ${ICONV_LIBRARIES})
+endif()
 
 ceammc_add_extension_test("list_walk" "../list/list_walk.cpp")
 ceammc_add_extension_test("list_walk2" "../list/list_walk.cpp")
@@ -36,17 +42,14 @@ ceammc_add_extension_test("ext_msg" "../base/msg.cpp")
 ceammc_add_extension_test("ext_list_each" "../list/list_each.cpp")
 ceammc_add_extension_test("ext_path_lsdir" "../path/path_listdir.cpp")
 ceammc_add_extension_test("ext_symbol_num_compare" "../symbol/symbol_num_compare.cpp")
-
-if(GLIB_FOUND)
-    include_directories(${GLIB_INCLUDE_DIRS})
-    ceammc_add_extension_test("ext_system_getenv" "../system/system_getenv.cpp")
-    target_link_libraries(test_ext_system_getenv ${GLIB_LIBRARIES})
-endif()
+ceammc_add_extension_test("ext_system_getenv" "../system/system_getenv.cpp")
 
 ceammc_add_test_linked(TITLE "ceammc::pd" NAME test_pd SRC "../base/debug_gensym.cpp" LINK ceammc_core puredata-core)
 
+if(WITH_LIBSNDFILE)
+    include(FindLibSndFile)
+endif()
 
-include(FindLibSndFile)
 if(LIBSNDFILE_FOUND)
     include_directories(${LIBSNDFILE_INCLUDE_DIRS})
     ceammc_add_test_linked(

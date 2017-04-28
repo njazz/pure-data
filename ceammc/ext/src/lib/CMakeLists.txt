@@ -2,17 +2,13 @@ include_directories(${CMAKE_BINARY_DIR}) # for config.h
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/ceammc/extra/CicmWrapper/Sources)
 
+find_package(Iconv)
+
 set(LIBCEAMMC_COMPILE_FLAGS "${PD_EXTERNAL_CFLAGS}")
 set(LIBCEAMMC_LINK_FLAGS ${PD_EXTERNAL_LDFLAGS})
 if(WIN32)
     set(LIBCEAMMC_LINK_FLAGS "")
     set(LIBCEAMMC_COMPILE_FLAGS "-lpsapi")
-endif()
-
-if(${WITH_COVERAGE})
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        set(LIBCEAMMC_LINK_FLAGS "${LIBCEAMMC_LINK_FLAGS} --coverage")
-    endif()
 endif()
 
 set(CEAMMC_LIB_SOURCES ceammc.h
@@ -35,12 +31,17 @@ set(CEAMMC_LIB_SOURCES ceammc.h
     ceammc_pd.cpp
     ceammc_platform.cpp
     ceammc_property.cpp
+    ceammc_string.cpp
     ceammc_timeline.cpp)
 
 if(UNIX)
     list(APPEND CEAMMC_LIB_SOURCES ceammc_platform_unix.cpp)
+    if(ICONV_FOUND)
+        include_directories(${ICONV_INCLUDE_DIR})
+        list(APPEND CEAMMC_LIB_SOURCES ceammc_string_iconv.cpp)
+    endif()
 elseif(WIN32)
-    list(APPEND CEAMMC_LIB_SOURCES ceammc_platform_win.cpp)
+    list(APPEND CEAMMC_LIB_SOURCES ceammc_string_win.cpp ceammc_platform_win.cpp)
 endif()
 
 # main shared library
@@ -60,6 +61,10 @@ if(WIN32)
             "${CMAKE_CURRENT_BINARY_DIR}/../tests")
 endif()
 
+if(ICONV_FOUND)
+    target_link_libraries(ceammc_core ${ICONV_LIBRARIES})
+endif()
+
 #
 # sound library
 #
@@ -72,7 +77,10 @@ set(CEAMMC_LOAD_LIBS "")
 set(CEAMMC_LOAD_DEFS "")
 
 # libsndfile backend
-include(FindLibSndFile)
+if(WITH_LIBSNDFILE)
+    include(FindLibSndFile)
+endif()
+
 if(LIBSNDFILE_FOUND)
     list(APPEND CEAMMC_LOAD_DEFS "-DWITH_LIBSOUNDFILE")
     list(APPEND CEAMMC_LOAD_LIBS ${LIBSNDFILE_LIBRARIES})

@@ -11,19 +11,11 @@
  * contact the author of this file, or the owner of the project in which
  * this file belongs to.
  *****************************************************************************/
-#ifndef CEAMMC_PLATFORM_UNIX_H
-#define CEAMMC_PLATFORM_UNIX_H
+#ifndef CEAMMC_STRING_ICONV_H
+#define CEAMMC_STRING_ICONV_H
 
-#include <string>
+#include <cstddef>
 
-namespace ceammc {
-bool unix_is_path_relative(const char* path);
-std::string unix_basename(const char* path);
-std::string unix_dirname(const char* path);
-bool unix_fnmatch(const char* pattern, const char* str);
-bool unix_path_exists(const char* path);
-bool unix_mkdir(const char* path, int flags = -1);
-bool unix_rmdir(const char* path);
-}
+size_t iconv_utf8_strlen(const char*);
 
-#endif // CEAMMC_PLATFORM_UNIX_H
+#endif // CEAMMC_STRING_ICONV_H

@@ -141,6 +141,7 @@ set(DOC_FILES
     pass.if
     pass.this
     path.basename
+    path.dirname
     prop.get
     prop.set
     random.int
@@ -148,6 +149,7 @@ set(DOC_FILES
     reject.this
     replace
     snd.file
+    symbol.equal
     symbol.length
     system.getenv
     system.hostname

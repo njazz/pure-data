@@ -418,6 +418,9 @@
     <entry descr="outputs filename portion of pathname" name="path.basename" ref_view="object">
       <xi:include href="path.basename.pddoc" parse="xml"/>
     </entry>
+    <entry descr="outputs directory portion of pathname" name="path.dirname" ref_view="object">
+      <xi:include href="path.dirname.pddoc" parse="xml"/>
+    </entry>
   </category>
   <category name="predicates">
     <entry descr="checks if input data has *any* type" name="is_any" ref_view="object">
@@ -472,7 +475,10 @@
     </entry>
   </category>
   <category name="symbol">
-    <entry descr="length of symbol (unicode supported)" name="symbol.length" ref_view="object">
+    <entry descr="check symbols for equality" name="symbol.equal" ref_view="object">
+      <xi:include href="symbol.equal.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="number of characters in symbol (unicode supported)" name="symbol.length" ref_view="object">
       <xi:include href="symbol.length.pddoc" parse="xml"/>
     </entry>
   </category>
