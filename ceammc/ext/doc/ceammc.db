@@ -1,3 +1,6 @@
+conv.bpm2hz,bpm->hz		.		.
+conv.bpm2ms,bpm->ms		.		.
+conv.bpm2sec,bpm->sec		.		.
 conv.sec2str,sec->str		.		.
 conv.str2sec,str->sec		.		.
 data.fifo		.		.
@@ -13,6 +16,7 @@ env.adsr~		~		~.
 env.ar~		~		~.
 env.follow~		~		~.
 expand_env		.		.
+flow.sync		?		?
 flt.biquad~		~~~~~~		~
 flt.bpf12~		~		~.
 flt.bpf24~		~		~.
@@ -134,10 +138,8 @@ pass.if		..		..
 pass.this		.		.
 path.basename		.		.
 path.dirname		.		.
-prop->,prop->		.		?
 prop.get,prop->		.		?
 prop.set,prop<-		?		.
-prop<-		?		.
 random.int		.		.
 reject.if		..		..
 reject.this		.		.
