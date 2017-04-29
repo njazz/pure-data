@@ -6,121 +6,161 @@
 //
 //
 
-#include <stdio.h>
+#include <boost/scoped_ptr.hpp>
 
-//TODO proper build
-#define __MACOSX_CORE__
-#include "RtMidi.cpp"
+#include "RtMidi.h"
 
-#include "ceammc.hpp"
 #include "ceammc_factory.h"
-#include "ceammc_fn_list.h"
 #include "ceammc_log.h"
 #include "ceammc_object.h"
 
 using namespace ceammc;
 
-std::vector<t_outlet*> midiInOutlets;
-
-void mycallback(double deltatime, std::vector<unsigned char>* message, void* userData)
-{
-    size_t nBytes = message->size();
-
-    AtomList list;
-    for (unsigned int i = 0; i < nBytes; i++)
-        list.append(Atom(float(message->at(i))));
-
-    for (std::vector<t_outlet*>::iterator it = midiInOutlets.begin(); it != midiInOutlets.end(); ++it) {
-        list.output(*it);
-    }
-}
+typedef boost::scoped_ptr<RtMidiIn> SharedMidiIn;
 
 class PdMidiIn : public BaseObject {
-    const size_t in_count_;
-    const size_t out_count_;
-    RtMidiIn* midiin;
-
-    AtomProperty portName;
+    SharedMidiIn midiin_;
+    float port_;
+    t_symbol* device_;
 
 public:
     PdMidiIn(const PdArgs& a)
         : BaseObject(a)
-        , in_count_(0)
-        , out_count_(1)
-        , portName("port", Atom(gensym("")), 0)
+        , port_(0)
+        , device_(0)
     {
         createOutlet();
-        midiInOutlets.push_back(this->outletAt(0));
 
         try {
-            this->midiin = new RtMidiIn();
-        } catch (RtMidiError& error) {
-            error.printMessage();
-            post("MIDI In error");
-        }
+            midiin_.reset(new RtMidiIn());
 
-        if (this->midiin) {
-            int nPorts = midiin->getPortCount();
-
-            post("MIDI In ports (%i) :", nPorts);
+            unsigned int nPorts = midiin_.get()->getPortCount();
+            OBJ_DBG << "MIDI In ports (" << nPorts << "):";
 
             for (unsigned int i = 0; i < nPorts; i++) {
-                // try/catch?
-                post(midiin->getPortName(i).c_str());
+                OBJ_DBG << "    " << i << ": " << midiin_->getPortName(i);
             }
-
-            if (nPorts) {
-                midiin->openPort(0);
-                midiin->setCallback(&mycallback);
-                midiin->ignoreTypes(false, false, false);
-            }
+        } catch (RtMidiError& error) {
+            error.printMessage();
+            OBJ_ERR << "MIDI In error: " << error.what();
         }
 
-        createProperty(&this->portName);
+        createCbProperty("@port", &PdMidiIn::p_getPort, &PdMidiIn::p_setPort);
+        createCbProperty("@device", &PdMidiIn::p_getDevice, &PdMidiIn::p_setDevice);
+        parseArguments();
     }
 
     void onFloat(float f)
     {
-        int i = int(f);
-        
-        int nPorts = midiin->getPortCount();
-        if (i<nPorts)
-        {
-            if (midiin->isPortOpen())
-                midiin->closePort();
-            midiin->openPort(i);
-        }
-            
-            
+        port_ = f;
+        connectByPort();
     }
 
     void onSymbol(t_symbol* s)
     {
-        int p = searchPort(s);
-        if (p) {
-            if (midiin->isPortOpen())
-                midiin->closePort();
-            midiin->openPort(p);
+        device_ = s;
+        connectByDevice();
+    }
+
+    AtomList p_getPort() const
+    {
+        return Atom(port_);
+    }
+
+    void p_setPort(const AtomList& lst)
+    {
+        if (!checkArgs(lst, ARG_FLOAT)) {
+            OBJ_ERR << "MIDI port (int) required.";
+            return;
         }
+
+        port_ = lst[0].asFloat(0);
+        connectByPort();
+    }
+
+    AtomList p_getDevice() const
+    {
+        return device_ ? AtomList(device_) : Atom();
+    }
+
+    void p_setDevice(const AtomList& lst)
+    {
+        if (!checkArgs(lst, ARG_SYMBOL)) {
+            OBJ_ERR << "device name required";
+            return;
+        }
+
+        device_ = lst[0].asSymbol();
+        connectByDevice();
+    }
+
+    void connectByPort()
+    {
+        int n = int(port_);
+        unsigned int nPorts = midiin_->getPortCount();
+        if (n >= 0 && n < nPorts)
+            openPort(n);
+        else
+            OBJ_ERR << "can't open MIDI port: " << n;
+    }
+
+    void connectByDevice()
+    {
+        if (!device_)
+            return;
+
+        std::string name(device_->s_name);
+        int p = searchPort(name);
+        if (p < 0) {
+            OBJ_ERR << "can't open MIDI device: " << name;
+            return;
+        }
+
+        port_ = p;
+        connectByPort();
+    }
+
+public:
+    static void midiCallback(double /*deltatime*/, std::vector<unsigned char>* message, void* userData)
+    {
+        AtomList list;
+        for (size_t i = 0; i < message->size(); i++)
+            list.append(Atom(float(message->at(i))));
+
+        PdMidiIn* obj = reinterpret_cast<PdMidiIn*>(userData);
+        obj->listTo(0, list);
     }
 
 private:
-    int searchPort(t_symbol* s)
+    void openPort(unsigned int n)
     {
-        if (!s) return -1;
-        
-        if (this->midiin) {
-            int nPorts = midiin->getPortCount();
-            for (unsigned int i = 0; i < nPorts; i++) {
-                // try/catch?
-                if(midiin->getPortName(i) == s->s_name)
-                {return i;}
+        if (!midiin_)
+            return;
+
+        if (midiin_->isPortOpen())
+            midiin_->closePort();
+
+        midiin_->openPort(n);
+        midiin_->setCallback(&midiCallback, this);
+        midiin_->ignoreTypes(false, false, false);
+        device_ = gensym(midiin_->getPortName(n).c_str());
+        OBJ_DBG << "open device: [" << n << "] " << device_->s_name;
+    }
+
+    int searchPort(const std::string& name)
+    {
+        if (!midiin_)
+            return -1;
+
+        unsigned int nPorts = midiin_->getPortCount();
+        for (unsigned int idx = 0; idx < nPorts; idx++) {
+            if (midiin_->getPortName(idx).substr(0, name.size()) == name) {
+                return idx;
             }
-            
         }
 
         return -1;
-    };
+    }
 };
 
 extern "C" void setup_midi0x2ein()
