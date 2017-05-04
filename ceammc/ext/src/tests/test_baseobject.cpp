@@ -18,6 +18,24 @@
 
 using namespace ceammc;
 
+class EXT_A : public BaseObject {
+public:
+    EXT_A(const PdArgs& a)
+        : BaseObject(a)
+    {
+        createProperty(new FloatProperty("@a", -1));
+    }
+};
+
+class EXT_B : public EXT_A {
+public:
+    EXT_B(const PdArgs& a)
+        : EXT_A(a)
+    {
+        createProperty(new FloatProperty("@b", -2));
+    }
+};
+
 TEST_CASE("BaseObject", "[ceammc::BaseObject]")
 {
     SECTION("test prop key")
@@ -122,6 +140,174 @@ TEST_CASE("BaseObject", "[ceammc::BaseObject]")
                 BaseObject::ARG_SYMBOL, BaseObject::ARG_INT, BaseObject::ARG_FLOAT));
             REQUIRE_FALSE(b.checkArgs(L4(-2, "a", "@a", 100.1f), BaseObject::ARG_INT,
                 BaseObject::ARG_INT, BaseObject::ARG_SNONPROPERTY, BaseObject::ARG_NATURAL));
+        }
+    }
+
+    SECTION("parseProperties")
+    {
+        SECTION("only props")
+        {
+            BaseObject b(PdArgs(L5("@p1", 1, "@p2", 2, 3), gensym("testname"), 0));
+            REQUIRE(b.positionalArguments() == AtomList());
+
+            b.createProperty(new FloatProperty("@p1", -1));
+            b.createProperty(new ListProperty("@p2"));
+            b.createProperty(new FloatProperty("@p3", -1));
+            b.parseProperties();
+
+            REQUIRE_PROPERTY(b, @p1, 1);
+            REQUIRE(b.hasProperty(gensym("@p2")));
+            REQUIRE(b.property(gensym("@p2"))->get() == L2(2, 3));
+            REQUIRE_PROPERTY(b, @p3, -1);
+
+            REQUIRE(b.positionalArguments().empty());
+        }
+
+        SECTION("only raw args")
+        {
+            BaseObject b(PdArgs(L5(1, 2, "a", "b", "c"), gensym("testname"), 0));
+            REQUIRE(b.positionalArguments() == L5(1, 2, "a", "b", "c"));
+
+            b.createProperty(new FloatProperty("@p1", -1));
+            b.createProperty(new ListProperty("@p2"));
+            b.createProperty(new FloatProperty("@p3", -1));
+            b.parseProperties();
+
+            REQUIRE_PROPERTY(b, @p1, -1);
+            REQUIRE(b.hasProperty(gensym("@p2")));
+            REQUIRE(b.property(gensym("@p2"))->get() == AtomList());
+            REQUIRE_PROPERTY(b, @p3, -1);
+
+            REQUIRE(b.positionalArguments() == L5(1, 2, "a", "b", "c"));
+        }
+
+        SECTION("props and raw args")
+        {
+            BaseObject b(PdArgs(L5(1, 2, "@p1", "@p2", "c"), gensym("testname"), 0));
+            b.createProperty(new FloatProperty("@p1", -1));
+            b.createProperty(new ListProperty("@p2"));
+            b.parseProperties();
+
+            REQUIRE_PROPERTY(b, @p1, -1);
+            REQUIRE(b.hasProperty(gensym("@p2")));
+            REQUIRE(b.property(gensym("@p2"))->get() == L1("c"));
+
+            REQUIRE(b.positionalArguments() == L2(1, 2));
+
+            b.parseProperties();
+            REQUIRE(b.positionalArguments() == L2(1, 2));
+        }
+    }
+
+    SECTION("inheritance")
+    {
+        {
+            EXT_B b(PdArgs(AtomList(), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, -1);
+            REQUIRE_PROPERTY(b, @b, -2);
+
+            REQUIRE(b.positionalArguments().empty());
+
+            REQUIRE(b.positionalFloatArgument(0, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(100, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(-100, -1) == -1);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+        }
+
+        {
+            EXT_B b(PdArgs(L2("@a", 100), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, 100);
+            REQUIRE_PROPERTY(b, @b, -2);
+
+            REQUIRE(b.positionalArguments().empty());
+
+            REQUIRE(b.positionalFloatArgument(0, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(100, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(-100, -1) == -1);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+        }
+
+        {
+            EXT_B b(PdArgs(L2("@b", 200), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, -1);
+            REQUIRE_PROPERTY(b, @b, 200);
+
+            REQUIRE(b.positionalArguments().empty());
+
+            REQUIRE(b.positionalFloatArgument(0, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(100, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(-100, -1) == -1);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+        }
+
+        {
+            EXT_B b(PdArgs(L4("@b", 200, "@a", -100), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, -100);
+            REQUIRE_PROPERTY(b, @b, 200);
+
+            REQUIRE(b.positionalArguments().empty());
+
+            REQUIRE(b.positionalFloatArgument(0, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(100, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(-100, -1) == -1);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+        }
+
+        {
+            EXT_B b(PdArgs(L6(1, 2, "@b", 200, "@a", -100), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, -100);
+            REQUIRE_PROPERTY(b, @b, 200);
+
+            REQUIRE(b.positionalArguments() == L2(1, 2));
+
+            REQUIRE(b.positionalFloatArgument(0, -1) == 1);
+            REQUIRE(b.positionalFloatArgument(1, -1) == 2);
+            REQUIRE(b.positionalFloatArgument(2, -1) == -1);
+            REQUIRE(b.positionalFloatArgument(-1, -100) == -100);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+
+            REQUIRE(b.positionalArgument(0) == A(1));
+            REQUIRE(b.positionalArgument(1) == A(2));
+            REQUIRE(b.positionalArgument(2).isNone());
+            REQUIRE(b.positionalArgument(3).isNone());
+
+            REQUIRE(b.positionalSymbolArgument(10, 0) == 0);
+            REQUIRE(b.positionalSymbolArgument(-10, 0) == 0);
+        }
+
+        {
+            EXT_B b(PdArgs(L6("first", "second", "@b", 200, "@a", -100), gensym("ext.b"), 0));
+            b.parseProperties();
+            REQUIRE_PROPERTY(b, @a, -100);
+            REQUIRE_PROPERTY(b, @b, 200);
+
+            REQUIRE(b.positionalFloatArgument(0) == 0.f);
+            REQUIRE(b.positionalFloatArgument(1) == 0.f);
+            REQUIRE(b.positionalFloatArgument(2) == 0.f);
+
+            REQUIRE(b.positionalSymbolArgument(0, 0) == S("first"));
+            REQUIRE(b.positionalSymbolArgument(1, 0) == S("second"));
+            REQUIRE(b.positionalSymbolArgument(2, 0) == 0);
         }
     }
 }

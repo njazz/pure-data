@@ -1,5 +1,7 @@
 #include "mod_list.h"
 
+extern "C" void setup_list0x2eall_of();
+extern "C" void setup_list0x2eany_of();
 extern "C" void setup_list0x2eapply_to();
 extern "C" void setup_list0x2eat();
 extern "C" void setup_list0x2echoice();
@@ -19,10 +21,12 @@ extern "C" void setup_list0x2elength();
 extern "C" void setup_list0x2emax();
 extern "C" void setup_list0x2emean();
 extern "C" void setup_list0x2emin();
+extern "C" void setup_list0x2enone_of();
 extern "C" void setup_list0x2enormalize();
 extern "C" void setup_list0x2eproduct();
 extern "C" void setup_list0x2erange();
 extern "C" void setup_list0x2ereduce();
+extern "C" void setup_list0x2eremove_if();
 extern "C" void setup_list0x2erepack();
 extern "C" void setup_list0x2erepeat();
 extern "C" void setup_list0x2eresize();
@@ -45,6 +49,8 @@ extern "C" void setup_list0x2ezip();
 
 void ceammc_list_setup()
 {
+    setup_list0x2eall_of();
+    setup_list0x2eany_of();
     setup_list0x2eapply_to();
     setup_list0x2eat();
     setup_list0x2echoice();
@@ -64,10 +70,12 @@ void ceammc_list_setup()
     setup_list0x2emax();
     setup_list0x2emean();
     setup_list0x2emin();
+    setup_list0x2enone_of();
     setup_list0x2enormalize();
     setup_list0x2eproduct();
     setup_list0x2erange();
     setup_list0x2ereduce();
+    setup_list0x2eremove_if();
     setup_list0x2erepack();
     setup_list0x2erepeat();
     setup_list0x2eresize();

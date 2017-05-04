@@ -51,7 +51,7 @@ References
 
 typedef struct _lyapunov {
     t_object c_ob;
-    void *c_out, *c_out2; // outlets
+    t_outlet *c_out, *c_out2; // outlets
     double a[6], b[6], nx, ny;
     double ainit[6], binit[6], nxinit, nyinit;
     bool om;
@@ -281,7 +281,7 @@ void lyapunov_a(lyapunov* x, t_symbol* msg, short argc, t_atom* argv)
             x->ainit[5] = (double)argv[5].a_w.w_float;
         else if (argv[5].a_type == A_FLOAT)
             x->ainit[5] = (double)argv[5].a_w.w_float;
-        x->ainit[5] = x->ainit[5];
+        x->a[5] = x->ainit[5];
     }
 
     if (argc > 4) {

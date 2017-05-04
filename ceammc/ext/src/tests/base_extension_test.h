@@ -51,7 +51,7 @@ class TestExtension : public T {
     std::vector<long> msg_count_;
 
 public:
-    TestExtension(const char* name, const AtomList& args);
+    TestExtension(const char* name, const AtomList& args = AtomList());
 
     /** send functions */
     void sendBang(int inlet = 0);
@@ -82,6 +82,13 @@ public:
     bool lastMessageIsBang(size_t outlet = 0) const;
     void cleanMessages(size_t outlet = 0);
     void cleanAllMessages();
+
+public:
+    typedef void (*sendAtomCallback)(TestExtension* obj, size_t outn, const Atom& a);
+    void setSendAtomCallback(sendAtomCallback cb) { atom_cb_ = cb; }
+
+private:
+    sendAtomCallback atom_cb_;
 };
 
 #define CALL(obj, method)                            \
@@ -116,11 +123,11 @@ public:
         REQUIRE(obj.lastMessage(outlet).isBang()); \
     }
 
-#define REQUIRE_FLOAT_AT_OUTLET(outlet, obj, v)                         \
-    {                                                                   \
-        REQUIRE(obj.hasNewMessages(outlet));                            \
-        REQUIRE(obj.lastMessage(outlet).isFloat());                     \
-        REQUIRE(obj.lastMessage(outlet).atomValue() == Atom(float(v))); \
+#define REQUIRE_FLOAT_AT_OUTLET(outlet, obj, v)                                      \
+    {                                                                                \
+        REQUIRE(obj.hasNewMessages(outlet));                                         \
+        REQUIRE(obj.lastMessage(outlet).isFloat());                                  \
+        REQUIRE(double(obj.lastMessage(outlet).atomValue().asFloat()) == Approx(v)); \
     }
 
 #define REQUIRE_SYMBOL_AT_OUTLET(outlet, obj, s)                         \
@@ -141,7 +148,14 @@ public:
     {                                              \
         Property* p = obj.property(gensym(#name)); \
         REQUIRE(p != 0);                           \
-        REQUIRE(p->get() == test_atom_wrap(val));                  \
+        REQUIRE(p->get() == test_atom_wrap(val));  \
+    }
+
+#define REQUIRE_PROPERTY_LIST(obj, name, lst)      \
+    {                                              \
+        Property* p = obj.property(gensym(#name)); \
+        REQUIRE(p != 0);                           \
+        REQUIRE(p->get() == lst);                  \
     }
 
 #define REQUIRE_PROPERTY_NONE(obj, name)           \
@@ -316,9 +330,11 @@ void WHEN_SEND_BANG_TO(size_t inlet, T& obj)
 template <class T>
 TestExtension<T>::TestExtension(const char* name, const AtomList& args)
     : T(PdArgs(args, gensym(name), make_owner<T>(name)))
+    , atom_cb_(0)
 {
     msg_.assign(T::numOutlets(), MessageList());
     msg_count_.assign(T::numOutlets(), -1);
+    T::parseProperties();
 }
 
 template <class T>
@@ -407,6 +423,9 @@ template <class T>
 void TestExtension<T>::atomTo(size_t n, const Atom& a)
 {
     msg_[n].push_back(Message(a));
+
+    if (atom_cb_)
+        atom_cb_(this, n, a);
 }
 
 template <class T>

@@ -1,3 +1,5 @@
+and
+approx
 array.p->s
 array.p2s
 array.phase->sample
@@ -17,6 +19,8 @@ conv.bpm2ms
 conv.bpm2sec
 conv.cc2amp
 conv.env2bpf
+conv.lin2curve
+conv.lin2exp
 conv.lin2lin
 conv.list2bpf
 conv.samp2sec
@@ -73,6 +77,7 @@ global.list
 is_any
 is_bang
 is_even
+is_file
 is_float
 is_list
 is_odd
@@ -81,6 +86,11 @@ is_symbol
 lfo.impulse~
 lfo.square~
 lfo.tri~
+lin->curve
+lin->exp
+lin->lin
+list.all_of
+list.any_of
 list.apply_to
 list.at
 list.choice
@@ -100,10 +110,12 @@ list.length
 list.max
 list.mean
 list.min
+list.none_of
 list.normalize
 list.product
 list.range
 list.reduce
+list.remove_if
 list.repack
 list.repeat
 list.resize
@@ -132,6 +144,7 @@ m
 math.abs
 math.acos
 math.acosh
+math.and
 math.asin
 math.asinh
 math.atan
@@ -150,6 +163,7 @@ math.log10
 math.log2
 math.nan
 math.neg
+math.or
 math.pi
 math.reciprocal
 math.round
@@ -184,6 +198,7 @@ noise.stein
 noise.torus
 noise.verhulst
 noise.white~
+or
 osc.impulse~
 osc.pulse~
 osc.saw~

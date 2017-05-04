@@ -1,6 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-set(CONV_SOURCES "")
+set(CONV_SOURCES "baserangeconverter.cpp")
 
 macro(ceammc_conv_extension name)
     list(APPEND CONV_SOURCES "conv_${name}.cpp")
@@ -17,6 +17,9 @@ ceammc_conv_extension(env2bpf)
 ceammc_conv_extension(list2bpf)
 ceammc_conv_extension(vline2bpf)
 ceammc_conv_extension(bpf2array)
+
+ceammc_conv_extension(lin2curve)
+ceammc_conv_extension(lin2exp)
 ceammc_conv_extension(lin2lin)
 
 ceammc_conv_extension(samp2sec)

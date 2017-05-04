@@ -1,6 +1,9 @@
 conv.bpm2hz,bpm->hz		.		.
 conv.bpm2ms,bpm->ms		.		.
 conv.bpm2sec,bpm->sec		.		.
+conv.lin2curve,lin->curve		.		.
+conv.lin2exp,lin->exp		.		.
+conv.lin2lin,lin->lin		.		.
 conv.sec2str,sec->str		.		.
 conv.str2sec,str->sec		.		.
 data.fifo		.		.
@@ -59,6 +62,8 @@ is_symbol		.		..
 lfo.impulse~		~		~
 lfo.square~		~		~
 lfo.tri~		~		~
+list.all_of		..		..
+list.any_of		..		..
 list.apply_to		..		..
 list.at		..		.
 list.choice		.		.
@@ -77,13 +82,15 @@ list.length		.		.
 list.max		.		.
 list.mean		.		.
 list.min		.		.
+list.none_of		..		..
 list.normalize		.		.
 list.product		.		.
 list.range		.		.
 list.reduce		..		..
+list.remove_if		..		..
 list.resize		.		.
 list.reverse		.		.
-list.seq		...		.
+list.seq		.		.
 list.shuffle		.		.
 list.sort		.		.
 list.sum		.		.
@@ -95,6 +102,8 @@ live.capture~		~		~.
 math.abs		.		.
 math.acos		.		.
 math.acosh		.		.
+math.and		?		.
+math.approx,approx		...		.
 math.asin		.		.
 math.asinh		.		.
 math.atan		.		.

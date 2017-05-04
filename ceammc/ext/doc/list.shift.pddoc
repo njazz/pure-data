@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <pddoc version="1.0">
     <object name="list.shift">
         <title>list.shift</title>
@@ -18,11 +18,12 @@
             </also>
         </meta>
         <arguments>
-            <argument name="shift" type="float">Shift amount. Float values cause linear interpolation. Can be negative.</argument>
+            <argument name="shift" type="float">Shift amount. Float values cause linear
+            interpolation. Can be negative.</argument>
         </arguments>
         <inlets>
             <inlet>
-                <xinfo on="list">Input list. </xinfo>
+                <xinfo on="list">Input list.</xinfo>
             </inlet>
             <inlet>
                 <xinfo>New shift value.</xinfo>
@@ -33,17 +34,16 @@
         </outlets>
         <example>
             <pdascii>
-                <![CDATA[
+<![CDATA[
 [1 2 3 4 5(  [3.5 (
 |            |.
 [list.shift 2]
 |
-[prepend set]
+[msg set]
 |
 [ (
-                ]]>
+]]>
             </pdascii>
         </example>
     </object>
 </pddoc>
-

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $# -ne 3 ]
+if [ $# -ne 4 ]
 then
     echo "Usage: $0 SRCDIR BINDIR OUTDIR VERSION"
 fi
@@ -8,7 +8,10 @@ fi
 SRCDIR="$1"
 BINDIR="$2"
 VERSION="$4"
-OUTDIR="$3/pd_ceammclib-$VERSION"
+OUTDIR="$3/ceammclib"
+SYSVER=$(sw_vers | grep ProductVersion | cut -f2 | cut -f1,2 -d.)
+OUTFILE="ceammclib-${VERSION}-macosx-${SYSVER}-vanilla-0.47.tar.gz"
+DYLIBBUNDLER="@DYLIBBUNDLER@"
 
 
 function skip_ext {
@@ -31,7 +34,6 @@ find "${BINDIR}" -name *.dylib -print0 | while read -r -d '' file
 do
     cp "$file" "${OUTDIR}"
     echo "+ Lib:  $(basename $file)"
-#    dylibbundler -x ${OUTDIR}/$(basename $file) -b -d ${OUTDIR} -p @loader_path/ -of
 done
 
 
@@ -39,7 +41,6 @@ echo "Copying extension files to ${OUTDIR} ..."
 find "${BINDIR}" -name *.d_fat -print0 | while read -r -d '' file
 do
     ext_name=$(basename $file)
-    cp_ext_name="${ext_name%.d_fat}.pd_darwin"
     skip_ext $file
     if [ $? -eq 1 ]
     then
@@ -47,28 +48,28 @@ do
         continue
     fi
 
-    cp "$file" "${OUTDIR}/${ext_name%.d_fat}.pd_darwin"
-    echo "+ Copy: '$ext_name' as '$cp_ext_name'"
-    dylibbundler -x ${OUTDIR}/$cp_ext_name -b -d ${OUTDIR} -p @loader_path/ -of
+    cp "$file" "${OUTDIR}/${ext_name}"
+    echo "+ Copy: '$ext_name'"
+    ${DYLIBBUNDLER} -x ${OUTDIR}/$ext_name -b -d ${OUTDIR} -p @loader_path/ -of
 done
 
 ceammc_lib=$(find "${BINDIR}" -name ceammc\\.d_fat)
 cp $ceammc_lib "${OUTDIR}"
-
-ceammc_compat=$(find "${BINDIR}" -name ceammc_compat.d_fat)
-cp $ceammc_compat "${OUTDIR}/ceammc.pd_darwin"
-dylibbundler -x ${OUTDIR}/ceammc.pd_darwin -b -d ${OUTDIR} -p @loader_path/ -of
-rm "${OUTDIR}/ceammc_compat.pd_darwin"
+${DYLIBBUNDLER} -x ${OUTDIR}/ceammc.d_fat -b -d ${OUTDIR} -p @loader_path/ -of
 
 echo "Copying help files to ${OUTDIR} ..."
 find "${SRCDIR}/ext/doc" -name *-help\\.pd | while read file
 do
     help=$(basename $file)
     cat "$file" |
-        sed 's/ui\.link @title \([^ ]*\) @url \([^; ]*\)/pddplink \2 -text \1/' |
+        sed 's/ceammc\/ceammc-help\.pd/ceammc-help.pd/' |
         sed 's/\.\.\/index-help\.pd/index-help.pd/' > "${OUTDIR}/${help}"
     echo "+ Copy: '$help'"
 done
+
+cd "$3"
+tar cfvz "${OUTFILE}" $(basename $OUTDIR)
+mv "${OUTFILE}" ..
 
 
 

@@ -10,6 +10,15 @@
     <entry descr="convert frequency in BPM to period in seconds" name="conv.bpm2sec" ref_view="object">
       <xi:include href="conv.bpm2sec.pddoc" parse="xml"/>
     </entry>
+    <entry descr="map linear to exponential range with 0 allowed." name="conv.lin2curve" ref_view="object">
+      <xi:include href="conv.lin2curve.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="maps linear range to exponential range" name="conv.lin2exp" ref_view="object">
+      <xi:include href="conv.lin2exp.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="convert from one linear range to another" name="conv.lin2lin" ref_view="object">
+      <xi:include href="conv.lin2lin.pddoc" parse="xml"/>
+    </entry>
     <entry descr="converts float time in seconds to formated symbol" name="conv.sec2str" ref_view="object">
       <xi:include href="conv.sec2str.pddoc" parse="xml"/>
     </entry>
@@ -107,7 +116,7 @@
     <entry descr="mono DC blocker" name="flt.dcblock~" ref_view="object">
       <xi:include href="flt.dcblock~.pddoc" parse="xml"/>
     </entry>
-    <entry descr="second order &quot;peaking equalizer&quot; section (gain boost or cut near some frequency).&#10;            Also called a &quot;parametric equalizer&quot; section." name="flt.eq_peak~" ref_view="object">
+    <entry descr="second order &quot;peaking equalizer&quot; section (gain boost or cut near some frequency). Also called a &quot;parametric equalizer&quot; section." name="flt.eq_peak~" ref_view="object">
       <xi:include href="flt.eq_peak~.pddoc" parse="xml"/>
     </entry>
     <entry descr="gain boost|cut above some frequency" name="flt.highshelf~" ref_view="object">
@@ -181,6 +190,12 @@
     </entry>
   </category>
   <category name="list">
+    <entry descr="checks if all list atoms accepted by predicate" name="list.all_of" ref_view="object">
+      <xi:include href="list.all_of.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="checks if at least one list element is accepted by predicate" name="list.any_of" ref_view="object">
+      <xi:include href="list.any_of.pddoc" parse="xml"/>
+    </entry>
     <entry descr="modifies list value at specified position, filtering it via external object." name="list.apply_to" ref_view="object">
       <xi:include href="list.apply_to.pddoc" parse="xml"/>
     </entry>
@@ -235,6 +250,9 @@
     <entry descr="returns smallest element in the list" name="list.min" ref_view="object">
       <xi:include href="list.min.pddoc" parse="xml"/>
     </entry>
+    <entry descr="checks if none of list atoms is accepted by predicate" name="list.none_of" ref_view="object">
+      <xi:include href="list.none_of.pddoc" parse="xml"/>
+    </entry>
     <entry descr="normalizes float list values to get their sum = 1.0" name="list.normalize" ref_view="object">
       <xi:include href="list.normalize.pddoc" parse="xml"/>
     </entry>
@@ -246,6 +264,9 @@
     </entry>
     <entry descr="apply function of two arguments cumulatively to the list" name="list.reduce" ref_view="object">
       <xi:include href="list.reduce.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="remove elements by predicate" name="list.remove_if" ref_view="object">
+      <xi:include href="list.remove_if.pddoc" parse="xml"/>
     </entry>
     <entry descr="changes list size with" name="list.resize" ref_view="object">
       <xi:include href="list.resize.pddoc" parse="xml"/>
@@ -293,6 +314,12 @@
     </entry>
     <entry descr="inverse hyperbolic cosine function" name="math.acosh" ref_view="object">
       <xi:include href="math.acosh.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="operation AND for multiple arguments" name="math.and" ref_view="object">
+      <xi:include href="math.and.pddoc" parse="xml"/>
+    </entry>
+    <entry descr="check if input value approximately equal to pattern" name="math.approx" ref_view="object">
+      <xi:include href="math.approx.pddoc" parse="xml"/>
     </entry>
     <entry descr="arc sine function" name="math.asin" ref_view="object">
       <xi:include href="math.asin.pddoc" parse="xml"/>
@@ -381,6 +408,7 @@
     <entry descr="truncate to integer value" name="math.trunc" ref_view="object">
       <xi:include href="math.trunc.pddoc" parse="xml"/>
     </entry>
+    <xi:include href="ceammc_category_math.xml" parse="xml"/>
   </category>
   <category name="msg">
     <entry descr="message constructor" name="msg" ref_view="object">
@@ -399,7 +427,7 @@
     <entry descr="Bandlimited impulse train generator" name="osc.impulse~" ref_view="object">
       <xi:include href="osc.impulse~.pddoc" parse="xml"/>
     </entry>
-    <entry descr="Bandlimited pulse train oscillator. " name="osc.pulse~" ref_view="object">
+    <entry descr="Bandlimited pulse train oscillator." name="osc.pulse~" ref_view="object">
       <xi:include href="osc.pulse~.pddoc" parse="xml"/>
     </entry>
     <entry descr="Bandlimited saw wave oscillator" name="osc.saw~" ref_view="object">

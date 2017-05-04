@@ -2,6 +2,7 @@ find_program(PD_DOC2PD pd_doc2pd)
 find_program(PD_MAKELIB pd_makelibrary)
 find_program(PD_LIB2PD pd_lib2pd)
 find_program(PD_CAT2PD pd_cat2pd)
+find_program(TIDY tidy)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/about.pd ${CMAKE_CURRENT_BINARY_DIR}/about.pd @ONLY)
 
@@ -9,6 +10,9 @@ set(DOC_FILES
     conv.bpm2hz
     conv.bpm2ms
     conv.bpm2sec
+    conv.lin2curve
+    conv.lin2lin
+    conv.lin2exp
     conv.sec2str
     conv.str2sec
     data.fifo
@@ -65,6 +69,8 @@ set(DOC_FILES
     is_list
     is_even
     live.capture~
+    list.all_of
+    list.any_of
     list.apply_to
     list.at
     list.choice
@@ -83,10 +89,12 @@ set(DOC_FILES
     list.max
     list.mean
     list.min
+    list.none_of
     list.normalize
     list.product
     list.range
     list.reduce
+    list.remove_if
     list.resize
     list.reverse
     list.seq
@@ -103,6 +111,8 @@ set(DOC_FILES
     math.abs
     math.acos
     math.acosh
+    math.and
+    math.approx
     math.asin
     math.asinh
     math.atan
@@ -253,8 +263,22 @@ endif()
             DESTINATION \"${CMAKE_INSTALL_PREFIX}/${DOC_INSTALL_PATH}\")"
     )
 
+if(TIDY)
+    message(STATUS "HTMLtidy found: ${TIDY}. The 'ceammc_pddoc_format' target available.")
+    add_custom_target(ceammc_pddoc_format
+        COMMAND ls *.pddoc | while read f\;
+        do
+            ${TIDY} -quiet -xml --indent auto
+            --indent-spaces 4 --wrap 100 --wrap-sections no $$f > "${CMAKE_CURRENT_BINARY_DIR}/$$f" \;
+            ${CMAKE_COMMAND} -E copy_if_different
+                "${CMAKE_CURRENT_BINARY_DIR}/$$f" . \;
+            echo "Format pddoc file: $$f" \;
+        done
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+endif()
+
 
 file(GLOB _PDDOC_FILES "*.pddoc")
 file(GLOB _PDDOC_XML_FILES "*.xml")
-add_custom_target(pddoc_files SOURCES ${_PDDOC_FILES} ${_PDDOC_XML_FILES})
+add_custom_target(pddoc_files SOURCES ${_PDDOC_FILES} ${_PDDOC_XML_FILES} ceammc.db)
 

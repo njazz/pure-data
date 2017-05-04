@@ -38,8 +38,15 @@ namespace convert {
     template <class T>
     T lin2lin(T v, T x0, T x1, T y0, T y1)
     {
-        return std::abs(v - x0) / std::abs(x0 - x1) * (y1 - y0) + y0;
+        return (v - x0) / (x1 - x0) * (y1 - y0) + y0;
     }
+
+    float lin2exp(float x, float x0, float x1, float y0, float y1);
+    double lin2exp(double x, double x0, double x1, double y0, double y1);
+    float exp2lin(float x, float x0, float x1, float y0, float y1);
+    double exp2lin(double x, double x0, double x1, double y0, double y1);
+    float lin2curve(float x, float x0, float x1, float y0, float y1, float curve);
+    double lin2curve(double x, double x0, double x1, double y0, double y1, double curve);
 }
 }
 
